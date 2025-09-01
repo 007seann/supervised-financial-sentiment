@@ -47,7 +47,116 @@ This paper introduces an automated system that generates sentiment metrics to su
 ## Keywords
 Sentiment Analysis, Fundamental Analysis, Data Orchestration, Machine Learning, Return, Volatility, 10-K fillings
 
+---
 
+# Sentiment-Enhanced ARIMAX for Equity Forecasting (2012–2024)
+
+## Project Overview
+
+This project extends a baseline **ARIMAX model** with **alternative sentiment data** to forecast daily returns for **Apple, Nvidia, and Tesla (2012–2024)**.
+This work incorporates **buy-side analyst reports, earnings calls, and sector-level sentiment** to test whether such signals contain tradable alpha.
+
+---
+
+## Motivation
+
+Most candidates and projects focus on running ARIMA/ARIMAX on coarse price data.
+This project goes further by:
+
+* **Building sentiment features from alternative data sources**.
+* **Designing a leakage-safe time-series CV pipeline** for realistic forecasting.
+* **Evaluating with quant trading metrics** (Sharpe ratio, hit-rate), not just statistical fit (R²).
+
+
+---
+
+## Methodology
+
+### 1. Data
+
+* Target: **next-day log returns** of Apple, Nvidia, Tesla.
+* Features (exogenous regressors):
+
+  * **SEC 10K/Q sentiment** (`sec_vol`, `sec_ret`)
+  * **Earnings call sentiment** (`calls_vol`, `calls_ret`)
+  * **Buy-side analyst report sentiment** (`report_vol`, `report_ret`)
+
+### 2. Model
+
+* **ARIMAX**.
+* Structure:
+  * **AR** → captures momentum / mean reversion.
+  * **MA** → captures shock persistence.
+  * **Exogenous regressors** → capture external signals (sentiment, volatility).
+  * **Error term** → market noise, tested with Ljung–Box, Jarque–Bera, heteroskedasticity diagnostics.
+
+### 3. Validation
+
+* **Expanding-window cross-validation** (5 folds).
+* **No leakage**: joint NaN handling, fold-by-fold scaling of features.
+* **Evaluation metrics**:
+
+  * **R²** (variance explained, expected near 0 for daily returns).
+  * **Hit-rate** (% correct directional predictions).
+  * **Sharpe ratio** (risk-adjusted profitability of long/short strategy).
+
+### 4. Ablation Testing
+
+* Baseline ARIMA (no exogenous).
+* ARIMAX with individual sentiment groups (SECs / Calls / Reports).
+* ARIMAX with all features combined.
+
+---
+
+##  Key Findings
+
+### Apple (2012–2024)
+
+* **Buy-side analyst reports alone** gave the strongest signal (Sharpe \~2.3).
+* Combining all features diluted performance.
+
+### Nvidia (2012–2024)
+
+* **Analyst reports** were strong (Sharpe \~2.2).
+* **Combining all signals** improved further (Sharpe \~2.3) → Nvidia is multi-narrative driven (AI, gaming, crypto).
+
+### Tesla (2012–2024)
+
+* **Analyst reports dominated** (Sharpe \~1.6–2.0).
+* Other signals (sector, calls) degraded performance.
+
+### Across all firms
+
+* **Baseline ARIMA was useless** (Sharpe \~0).
+* **R² ≈ 0 throughout** (as expected).
+* **Sharpe ratio revealed tradability** → buy-side analyst sentiment is the most robust alpha source.
+
+---
+
+## Results
+
+* **R² is meaningless for returns** — must evaluate with Sharpe and hit-rate.
+* **Ablation studies matter** — extra signals can dilute or complement alpha.
+* **Firm-specific differences exist**:
+
+  * Apple/Tesla → report-only signals dominate.
+  * Nvidia → combination of signals helps.
+* **Realistic pipeline** (walk-forward CV, leakage checks, trading metrics) is what differentiates real quant research from toy models.
+
+
+## 📈 Example Result (Tesla, 2012–2024)
+
+| Group      | R²     | Hit-rate | Sharpe      |
+| ---------- | ------ | -------- | ----------- |
+| ARIMA      | \~0    | 21%      | 0.36        |
+| ReportOnly | 0.005  | 48%      | **1.6–2.0** |
+| All        | -0.003 | 47%      | 1.2–1.9     |
+| CallsOnly  | -0.004 | 44%      | 0.29        |
+| SecOnly    | -0.015 | 42%      | -0.31       |
+
+---
+
+# Model Details
 # SEC Filing Extraction and Sentiment Score Prediction Models
 
 ## SEC Filing Extraction Model (SFEM)

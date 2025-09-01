@@ -131,9 +131,6 @@ This project goes further by:
 * **R² ≈ 0 throughout** (as expected).
 * **Sharpe ratio revealed tradability** → buy-side analyst sentiment is the most robust alpha source.
 
----
-
-## Results
 
 * **R² is meaningless for returns** — must evaluate with Sharpe and hit-rate.
 * **Ablation studies matter** — extra signals can dilute or complement alpha.
@@ -142,7 +139,7 @@ This project goes further by:
   * Apple/Tesla → report-only signals dominate.
   * Nvidia → combination of signals helps.
 * **Realistic pipeline** (walk-forward CV, leakage checks, trading metrics) is what differentiates real quant research from toy models.
-
+---
 
 ## 📈 Example Result (Tesla, 2012–2024)
 

@@ -131,7 +131,7 @@ This project goes further by:
 * **R² ≈ 0 throughout** (as expected).
 * **Sharpe ratio revealed tradability** → buy-side analyst sentiment is the most robust alpha source.
 
-
+---
 * **R² is meaningless for returns** — must evaluate with Sharpe and hit-rate.
 * **Ablation studies matter** — extra signals can dilute or complement alpha.
 * **Firm-specific differences exist**:

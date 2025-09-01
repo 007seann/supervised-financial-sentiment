@@ -1,4 +1,4 @@
-# supervised-financial-sentiment
+# Supervised-financial-sentiment
 A supervised learning framework for generating sentiment metrics from 10-K filings, designed to predict asset returns and volatility with high explanatory power.
 
 
@@ -48,8 +48,7 @@ This paper introduces an automated system that generates sentiment metrics to su
 Sentiment Analysis, Fundamental Analysis, Data Orchestration, Machine Learning, Return, Volatility, 10-K fillings
 
 ---
-# Findings
-## Sentiment-Enhanced ARIMAX for Equity Forecasting (2012–2024)
+# Findings: Sentiment-Enhanced ARIMAX for Equity Forecasting (2012–2024)
 
 ## Project Overview
 
